@@ -1,4 +1,6 @@
+
 import { createClient } from '@vercel/postgres';
+import { sql} from '@vercel/postgres';
 
 export async function connectToDb() {
   const client = createClient();
@@ -13,5 +15,17 @@ export async function connectToDb() {
   catch (error) {
     console.error('Database connection error:', error);
     throw new Error('Failed to connect to the database');
+  }
+}
+
+export async function getPosts() {
+  try {
+    const { rows } = await sql`SELECT * FROM posts`;
+    console.log('Rows:', rows);
+    return rows
+  }
+  catch (error) {
+    console.error('Error fetching posts:', error);
+    throw new Error('Failed to fetch posts');
   }
 }
