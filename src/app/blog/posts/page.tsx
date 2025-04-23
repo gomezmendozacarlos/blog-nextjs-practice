@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Post from '@/app/ui/components/posts/Post';
 import { Button } from "@/app/ui/components/button"
 import Link from 'next/link'
