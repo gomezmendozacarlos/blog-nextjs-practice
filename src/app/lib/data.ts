@@ -21,7 +21,6 @@ export async function connectToDb() {
 export async function getPosts() {
   try {
     const { rows } = await sql`SELECT * FROM posts`;
-    console.log('Rows:', rows);
     return rows
   }
   catch (error) {
