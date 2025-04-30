@@ -1,10 +1,14 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation'
 import { v4 as uuidv4 } from 'uuid';
+import { User } from '@/app/lib/definition';
+import { getSession } from 'next-auth/react';
 
 export default function Page() {
   const router = useRouter()
+  const [user, setUser] = useState<User | null>(null)
+
   const [formData, setFormData] = useState({
     id: '',
     title: '',
@@ -23,7 +27,7 @@ export default function Page() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const uuid = uuidv4();
-    fetch(`/api/posts?id=${uuid}&title=${formData.title}&content=${formData.content}&date=${formData.date}`, {
+    fetch(`/api/posts?id=${uuid}&title=${formData.title}&content=${formData.content}&date=${formData.date}&author=${user?.name}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -40,6 +44,18 @@ export default function Page() {
       router.push('/blog/posts');
     }).catch(console.error)
   }
+
+  useEffect(() => {
+    getSession().then((session) => {
+      if (session) {
+        setUser(session?.user || null);
+      } 
+
+      if (!session?.user) {
+        router.push('/blog/posts');
+      }
+    })
+  }, []);
 
   return (
     <div className="bg-white p-8 rounded shadow">
