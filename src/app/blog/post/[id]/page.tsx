@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import Post from '@/app/ui/components/posts/Post';
 import { connectToDb, getPosts } from '@/app/lib/data';
-//import { posts } from '@/app/lib/placeholder-data';
 
 type Post =   {
   id: string;
